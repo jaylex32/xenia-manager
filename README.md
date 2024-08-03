@@ -28,7 +28,7 @@ Head over to the [Quickstart page](https://github.com/xenia-manager/xenia-manage
     <img src="https://github.com/jaylex32/xenia-manager/blob/main/Assets/Screenshots/2.%20Home%20without%20games.png?raw=true" alt="Alt Text">
 </div>
 <div align="center">
-    <img src="https://github.com/jaylex32/xenia-manager/xenia-manager/blob/main/Assets/Screenshots/2.%20Home%20with%20games.png?raw=true" alt="Alt Text">
+    <img src="https://github.com/jaylex32/xenia-manager/blob/main/Assets/Screenshots/2.%20Home%20with%20games.png?raw=true" alt="Alt Text">
 </div>
 
 - Xenia Settings
