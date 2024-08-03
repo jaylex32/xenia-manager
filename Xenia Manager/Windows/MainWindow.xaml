@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Xenia_Manager"
         mc:Ignorable="d"
         Title="Xenia Manager"
-        Width="885" Height="720" WindowStyle="None"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Width="885" Height="720" MinWidth="885" MinHeight="720" WindowStyle="None"
+        ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
         Background="Transparent" AllowsTransparency="True"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Loaded="Window_Loaded">
@@ -23,28 +23,35 @@
 
             <!-- Title Bar -->
             <Border Grid.Row="0" 
-                    CornerRadius="10,10,0,0">
+        CornerRadius="10,10,0,0">
                 <Grid>
                     <!-- Title text -->
                     <TextBlock FontFamily="{StaticResource SegoeFluent}"
-                               FontSize="36"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource ForegroundColor}"
-                               HorizontalAlignment="Center"
-                               Text="Xenia Manager" 
-                               VerticalAlignment="Center"/>
-                    <Grid HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                   FontSize="36"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource ForegroundColor}"
+                   HorizontalAlignment="Center"
+                   Text="Xenia Manager" 
+                   VerticalAlignment="Center" Margin="40,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center">
+                        <!-- Back to Center alignment -->
+                        <!-- Minimize Button -->
+                        <Button x:Name="Minimize"
+                    Style="{StaticResource MinimizeButton}"
+                    Click="Minimize_Click"/>
+
+                        <!-- Maximize/Restore Button -->
+                        <Button x:Name="MaximizeRestore"
+                    Style="{StaticResource MaximizeRestoreButton}"
+                    Click="MaximizeRestore_Click"/>
 
                         <!-- Close Button -->
                         <Button x:Name="Exit"
-                                Grid.Column="1"
-                                Style="{StaticResource ExitButton}"
-                                Click="Exit_Click"/>
-                    </Grid>
+                    Style="{StaticResource ExitButton}"
+                    Click="Exit_Click"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -60,20 +67,21 @@
                     <!-- Navigation Bar -->
                     <Border Grid.Column="0"
                             CornerRadius="0,0,0,10">
-                        <Grid>
+                        <Grid Margin="5">
+                            <!-- Added left margin here -->
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0"
-                                        HorizontalAlignment="Stretch"
-                                        Orientation="Vertical"
-                                        VerticalAlignment="Stretch">
+                            HorizontalAlignment="Stretch"
+                            Orientation="Vertical"
+                            VerticalAlignment="Stretch">
                                 <!-- Home button -->
                                 <Button x:Name="Home"
-                                        Margin="0,10"
-                                        Style="{StaticResource NavigationButton}"
-                                        Click="Home_Click">
+                            Margin="0,10"
+                            Style="{StaticResource NavigationButton}"
+                            Click="Home_Click">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -81,14 +89,14 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Viewbox Grid.Row="0" 
-                                                     Margin="5,0">
+                                         Margin="5,0">
                                                 <TextBlock Style="{StaticResource NavigationButtonIcon}"
-                                                           Text="&#xe80f;"/>
+                                               Text="&#xe80f;"/>
                                             </Viewbox>
                                             <Viewbox Grid.Row="1" 
-                                                     Margin="5,0">
+                                         Margin="5,0">
                                                 <TextBlock Style="{StaticResource NavigationButtonText}"
-                                                           Text="Home"/>
+                                               Text="Home"/>
                                             </Viewbox>
                                         </Grid>
                                     </Button.Content>
@@ -96,8 +104,8 @@
 
                                 <!-- Xenia Settings button -->
                                 <Button x:Name="XeniaSettings"
-                                        Style="{StaticResource NavigationButton}"
-                                        Click="XeniaSettings_Click">
+                            Style="{StaticResource NavigationButton}"
+                            Click="XeniaSettings_Click" Margin="0,0,0,10">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -105,14 +113,14 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Viewbox Grid.Row="0" 
-                                                     Margin="5,0,5,5">
+                                         Margin="5,0,5,5">
                                                 <TextBlock Style="{StaticResource NavigationButtonIcon}"
-                                                           Text="&#xEF58;"/>
+                                               Text="&#xEF58;"/>
                                             </Viewbox>
                                             <Viewbox Grid.Row="1" 
-                                                     Margin="0">
+                                         Margin="0">
                                                 <TextBlock Style="{StaticResource NavigationButtonText}"
-                                                           Text="  Xenia&#x0a;Settings"/>
+                                               Text="  Xenia&#x0a;Settings"/>
                                             </Viewbox>
                                         </Grid>
                                     </Button.Content>
@@ -120,8 +128,8 @@
 
                                 <!-- Settings button -->
                                 <Button x:Name="Settings"
-                                        Style="{StaticResource NavigationButton}"
-                                        Click="Settings_Click">
+                            Style="{StaticResource NavigationButton}"
+                            Click="Settings_Click">
                                     <Button.Content>
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -129,14 +137,14 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <Viewbox Grid.Row="0" 
-                                                     Margin="5,0,5,5">
+                                         Margin="5,0,5,5">
                                                 <TextBlock Style="{StaticResource NavigationButtonIcon}"
-                                                           Text="&#xE713;"/>
+                                               Text="&#xE713;"/>
                                             </Viewbox>
                                             <Viewbox Grid.Row="1" 
-                                                     Margin="0">
+                                         Margin="0">
                                                 <TextBlock Style="{StaticResource NavigationButtonText}"
-                                                           Text="Settings"/>
+                                               Text="Settings"/>
                                             </Viewbox>
                                         </Grid>
                                     </Button.Content>
@@ -145,12 +153,12 @@
 
                             <!-- Update button -->
                             <Button x:Name="Update"
-                                    Grid.Row="1"
-                                    Margin="0,0,0,5"
-                                    Style="{StaticResource NavigationButton}"
-                                    VerticalAlignment="Bottom"
-                                    Visibility="Collapsed"
-                                    Click="Update_Click">
+                        Grid.Row="1"
+                        Margin="0,0,0,5"
+                        Style="{StaticResource NavigationButton}"
+                        VerticalAlignment="Bottom"
+                        Visibility="Collapsed"
+                        Click="Update_Click">
                                 <Button.Content>
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -158,14 +166,14 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Viewbox Grid.Row="0" 
-                                                 Margin="5,0,5,5">
+                                     Margin="5,0,5,5">
                                             <TextBlock Style="{StaticResource NavigationButtonIcon}"
-                                                       Text="&#xE777;"/>
+                                           Text="&#xE777;"/>
                                         </Viewbox>
                                         <Viewbox Grid.Row="1" 
-                                                 Margin="0">
+                                     Margin="0">
                                             <TextBlock Style="{StaticResource NavigationButtonText}"
-                                                       Text="Update"/>
+                                           Text="Update"/>
                                         </Viewbox>
                                     </Grid>
                                 </Button.Content>

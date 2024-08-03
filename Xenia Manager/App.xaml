@@ -68,29 +68,56 @@
                 </Style.Triggers>
             </Style>
 
-            <!-- Exit Button-->
-            <Style x:Key="ExitButton" TargetType="Button">
+            <!-- Base style for window control buttons -->
+            <Style x:Key="WindowControlButtonBase" TargetType="Button">
                 <Setter Property="Background" Value="{x:Null}"/>
                 <Setter Property="BorderBrush" Value="{x:Null}"/>
-                <Setter Property="Content" Value="&#xE711;"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="FontFamily" Value="{StaticResource SegoeFluentIcons}"/>
                 <Setter Property="FontSize" Value="32" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="Width" Value="46"/>
+                <Setter Property="Height" Value="40"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
                                 <ContentPresenter HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <!-- Minimize button style -->
+            <Style x:Key="MinimizeButton" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBase}">
+                <Setter Property="Content" Value="&#xE949;"/>
+            </Style>
+
+            <!-- Maximize/Restore button style -->
+            <Style x:Key="MaximizeRestoreButton" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBase}">
+                <Setter Property="Content" Value="&#xE739;"/>
+                <Setter Property="Width" Value="41"/>
+                <!-- Slightly reduced width -->
+                <Setter Property="Height" Value="35"/>
+                <!-- Slightly reduced height -->
+                <Setter Property="FontSize" Value="27"/>
+                <!-- Slightly smaller font size -->
+                <Setter Property="Padding" Value="0"/>
+                <!-- Remove any padding -->
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <!-- Center align vertically -->
+                <Setter Property="Margin" Value="0,-1,0,0"/>
+                <!-- Tiny top margin for fine-tuning -->
+            </Style>
+
+            <!-- Exit button style -->
+            <Style x:Key="ExitButton" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBase}">
+                <Setter Property="Content" Value="&#xE711;"/>
             </Style>
 
             <!-- Welcome Dialog Install Button -->

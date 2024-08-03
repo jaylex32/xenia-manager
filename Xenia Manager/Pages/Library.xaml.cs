@@ -29,12 +29,31 @@ namespace Xenia_Manager.Pages
     public partial class Library : Page
     {
         // Holds all of the installed games
-        public ObservableCollection<InstalledGame> Games = new ObservableCollection<InstalledGame>();
+        public ObservableCollection<InstalledGame> Games { get; set; } = new ObservableCollection<InstalledGame>();
 
         public Library()
         {
             InitializeComponent();
             LoadGamesStartup();
+            ((MainWindow)Application.Current.MainWindow).SizeChanged += (s, e) => UpdateGameIconSize();
+        }
+
+        private void UpdateGameIconSize()
+        {
+            var mainWindow = Application.Current.MainWindow;
+            bool isMaximized = mainWindow.WindowState == WindowState.Maximized;
+
+            foreach (Button button in GameGrid.Items)
+            {
+                button.Width = isMaximized ? 200 : 150;
+                button.Height = isMaximized ? 267 : 207;
+
+                if (button.Content is Border border)
+                {
+                    border.Width = button.Width;
+                    border.Height = button.Height;
+                }
+            }
         }
 
         /// <summary>
@@ -46,7 +65,7 @@ namespace Xenia_Manager.Pages
             {
                 if (System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"installedGames.json"))
                 {
-                    wrapPanel.Children.Clear();
+                    GameGrid.Items.Clear();
                     string JSON = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"installedGames.json");
                     Games = JsonConvert.DeserializeObject<ObservableCollection<InstalledGame>>((JSON));
                     await LoadGamesIntoUI();
@@ -66,7 +85,7 @@ namespace Xenia_Manager.Pages
         {
             try
             {
-                wrapPanel.Children.Clear();
+                GameGrid.Items.Clear();
                 await LoadGamesIntoUI();
             }
             catch (Exception ex)
@@ -204,8 +223,7 @@ namespace Xenia_Manager.Pages
             {
                 CornerRadius = new CornerRadius(10),
                 Background = Brushes.Black,
-                Child = image,
-                Clip = clipGeometry
+                Child = image
             };
         }
 
@@ -560,7 +578,7 @@ namespace Xenia_Manager.Pages
         /// </summary>
         /// <param name="button"></param>
         /// <param name="game"></param>
-        private void InitializeContextMenu(Button button, InstalledGame game)
+        private void InitializeContextMenu(Button button, dynamic game)
         {
             // Create new Context Menu
             ContextMenu contextMenu = new ContextMenu();
@@ -721,36 +739,36 @@ namespace Xenia_Manager.Pages
             try
             {
                 // Check if there are any games installed
-                if (Games == null && Games.Count == 0)
+                if (Games == null || Games.Count == 0)
                 {
                     return;
-                };
+                }
+
+                // Clear existing items
+                GameGrid.ItemsSource = null;
+                GameGrid.Items.Clear();
 
                 // Sort the games by name
-                IOrderedEnumerable<InstalledGame> orderedGames = Games.OrderBy(game => game.Title);
-                foreach (InstalledGame game in orderedGames)
+                var orderedGames = Games.OrderBy(game => game.Title).ToList();
+
+                foreach (var game in orderedGames)
                 {
+                    Log.Information($"Adding {game.Title} to the Library");
+
                     // Create a new button for the game
                     Button button = new Button();
-                    Log.Information($"Adding {game.Title} to the Library");
+
+                    button.Width = 150;
+                    button.Height = 200;
 
                     // Creating image for the game button
                     button.Content = await CreateButtonContent(game);
-
-                    // Animations
-                    MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-                    DoubleAnimation fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.15));
-                    DoubleAnimation fadeInAnimation = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.15));
-
-                    // Check for when animation is completed
-                    TaskCompletionSource<bool> animationCompleted = new TaskCompletionSource<bool>();
 
                     // When user clicks on the game, launch the game
                     button.Click += async (sender, e) =>
                     {
                         // Launch the game
                         await LaunchGame(game);
-
                         // When the user closes the game/emulator, reload the UI
                         await LoadGames();
                     };
@@ -768,29 +786,26 @@ namespace Xenia_Manager.Pages
                     toolTip.Content = textBlock;
                     button.ToolTip = toolTip;
 
-                    wrapPanel.Children.Add(button); // Add the game to the Warp Panel
+                    // Set button properties
+                    button.Width = 150;
+                    button.Height = 207;
+                    button.Margin = new Thickness(5);
 
-                    // When button loads
-                    button.Loaded += (sender, e) =>
-                    {
-                        // Button width and height
-                        button.Width = 150;
-                        button.Height = 207;
-                        button.Margin = new Thickness(5);
+                    InitializeContextMenu(button, game); // Creates ContextMenu
 
-                        InitializeContextMenu(button, game); // Creates ContextMenu
-                    };
+                    // Add the button to the GameGrid
+                    GameGrid.Items.Add(button);
                 }
+
+                UpdateGameIconSize(); // Add this line to update icon sizes
                 await Task.Delay(1);
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message + "\nFull Error:\n" + ex);
                 MessageBox.Show(ex.Message);
-                return;
             }
         }
-
         /// <summary>
         /// Saves the installed games into installedGames.json
         /// </summary>
@@ -984,6 +999,14 @@ namespace Xenia_Manager.Pages
                 Log.Error(ex.Message + "\nFull Error:\n" + ex);
                 MessageBox.Show(ex.Message);
                 return;
+            }
+        }
+
+        private void GameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is InstalledGame game)
+            {
+                LaunchGame(game);
             }
         }
     }

@@ -13,33 +13,54 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <!-- Buttons -->
+            <!-- Header with Add Game button -->
             <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource AddGameText}"
+                           Text="Games"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="50,0,0,0" FontSize="24"/>
                 <Button x:Name="AddGame" 
+                        Grid.Column="1"
                         Style="{StaticResource AddGame}"
-                        Click="AddGame_Click">
-                    <Button.Content>
-                        <TextBlock Style="{StaticResource AddGameText}"
-                                   Text="Add Game"/>
-                    </Button.Content>
+                        Click="AddGame_Click"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,15,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" 
+                              Fill="{DynamicResource ForegroundColor}" 
+                              Width="24" 
+                              Height="24" 
+                              Stretch="Uniform"
+                              Margin="5,5,5,5"/>
+                        <!--<TextBlock Style="{StaticResource AddGameText}"
+                                   Text="Add Game"
+                                   VerticalAlignment="Center"/>-->
+                    </StackPanel>
                 </Button>
             </Grid>
-
-            <!-- Seperation Line -->
+            <!-- Separation Line -->
             <Border Grid.Row="1" 
                     Style="{StaticResource SeperationLine}"/>
-
-            <!-- Games -->
-            <Grid Grid.Row="2">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                              VerticalScrollBarVisibility="Auto">
-                    <WrapPanel x:Name="wrapPanel" 
-                               Orientation="Horizontal"/>
-                </ScrollViewer>
-            </Grid>
+            <!-- Games Grid -->
+            <ScrollViewer Grid.Row="2"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="GameGrid" 
+              HorizontalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
     </Border>
 </Page>
